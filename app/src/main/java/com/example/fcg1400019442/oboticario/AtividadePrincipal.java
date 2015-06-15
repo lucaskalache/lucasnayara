@@ -47,10 +47,11 @@ public class AtividadePrincipal extends ActionBarActivity {
         ListView listView = (ListView) findViewById(R.id.lista_principal);
         listView.setAdapter(mAdaptador);
 
-
+        listView.setOnItemClickListener(new ItemClicado());
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -74,7 +75,7 @@ public class AtividadePrincipal extends ActionBarActivity {
     }
 
 
-    private class ItenClicado implements AdapterView.OnItemClickListener {
+    private class ItemClicado implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Toast.makeText(getApplicationContext(),
@@ -85,3 +86,4 @@ public class AtividadePrincipal extends ActionBarActivity {
         }
 
     }
+}
