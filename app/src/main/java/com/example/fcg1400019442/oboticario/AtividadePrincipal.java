@@ -4,9 +4,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,4 +74,14 @@ public class AtividadePrincipal extends ActionBarActivity {
     }
 
 
-}
+    private class ItenClicado implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Toast.makeText(getApplicationContext(),
+                    mAdaptador.getItem(position),
+                    Toast.LENGTH_SHORT
+
+            ).show();
+        }
+
+    }
