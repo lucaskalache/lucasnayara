@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AtividadeDetalhes"
+            android:label="@string/title_activity_atividade_detalhes"
+            android:parentActivityName=".AtividadePrincipal" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.fcg1400019442.oboticario.AtividadePrincipal" />
+        </activity>
     </application>
 
 </manifest>
