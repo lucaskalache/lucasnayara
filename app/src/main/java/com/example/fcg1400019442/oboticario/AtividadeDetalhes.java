@@ -1,9 +1,11 @@
 package com.example.fcg1400019442.oboticario;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 @SuppressWarnings("deprecation")
@@ -13,7 +15,17 @@ public class AtividadeDetalhes extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atividade_detalhes);
+
+        Intent intent = getIntent();
+        String detailText = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+        if(intent.hasExtra(Intent.EXTRA_TEXT)) {
+            TextView detailTextView = (TextView) findViewById(R.id.detalhe_de_texto);
+            detailTextView.setText(detailText);
+        }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
