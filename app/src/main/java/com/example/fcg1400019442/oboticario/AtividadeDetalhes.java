@@ -66,8 +66,13 @@ public class AtividadeDetalhes extends ActionBarActivity {
         @Override
         public void onClick(View v) {
 
+
+            TextView detailTextView = (TextView) findViewById(R.id.detalhe_de_texto);
+            String itemDaLista;
+            itemDaLista = detailTextView.getText().toString();
+
             Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
-                    .putExtra(AlarmClock.EXTRA_MESSAGE, "teste")
+                    .putExtra(AlarmClock.EXTRA_MESSAGE, itemDaLista)
                     .putExtra(AlarmClock.EXTRA_HOUR, 12)
                     .putExtra(AlarmClock.EXTRA_MINUTES, 34);
             if (intent.resolveActivity(getPackageManager()) != null) {
