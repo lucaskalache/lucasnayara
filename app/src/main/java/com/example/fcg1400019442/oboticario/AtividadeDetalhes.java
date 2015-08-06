@@ -56,6 +56,8 @@ public class AtividadeDetalhes extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent detailIntent = new Intent(getApplicationContext(),AtividadeConfiguracao.class);
+            startActivity(detailIntent);
             return true;
         }
 

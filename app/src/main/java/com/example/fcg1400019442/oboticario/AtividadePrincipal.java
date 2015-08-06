@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @SuppressWarnings("ALL")
-public class AtividadePrincipal extends ActionBarActivity {
+public class            AtividadePrincipal extends ActionBarActivity {
     private ArrayAdapter<String> mAdaptador;
 
 
@@ -69,6 +69,8 @@ public class AtividadePrincipal extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent detailIntent = new Intent(getApplicationContext(),AtividadeConfiguracao.class);
+            startActivity(detailIntent);
             return true;
         }
 
