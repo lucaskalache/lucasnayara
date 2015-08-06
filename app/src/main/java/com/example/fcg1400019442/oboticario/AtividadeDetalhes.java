@@ -1,6 +1,8 @@
 package com.example.fcg1400019442.oboticario;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.AlarmClock;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -26,6 +28,13 @@ public class AtividadeDetalhes extends ActionBarActivity {
 
         if (intent.hasExtra(Intent.EXTRA_TEXT)) {
             TextView detailTextView = (TextView) findViewById(R.id.detalhe_de_texto);
+
+          SharedPreferences cliente = PreferenceManager.getDefaultSharedPreferences(this);
+            String nome_cliente = cliente.getString(getString(R.string.conf_rep_chave),getString(R.string.conf_rep_padrao));
+
+            detailText = "Representante" + nome_cliente + "faz" + detailText;
+
+
             detailTextView.setText(detailText);
         }
 
