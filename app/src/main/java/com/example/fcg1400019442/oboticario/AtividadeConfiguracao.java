@@ -6,17 +6,18 @@ package com.example.fcg1400019442.oboticario;
         import android.preference.PreferenceActivity;
         import android.preference.PreferenceManager;
 
+@SuppressWarnings("deprecation")
 public class AtividadeConfiguracao extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: Usar layout XML
+        addPreferencesFromResource(R.xml.configuracao);
 
         // Para cada opção, associar um OnPreferenceChangeListener para atualizar a interface,
         // para que o texto nas configurações esteja de acordo com o valor atual da opção
-        // TODO: Adicionar opção
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.conf_rep_chave)));
     }
 
     /**
