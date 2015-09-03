@@ -1,6 +1,7 @@
 package com.example.fcg1400019442.oboticario;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,7 +18,7 @@ import java.util.List;
 
 
 @SuppressWarnings("ALL")
-public class            AtividadePrincipal extends ActionBarActivity {
+public class AtividadePrincipal extends ActionBarActivity {
     private ArrayAdapter<String> mAdaptador;
 
 
@@ -68,10 +69,13 @@ public class            AtividadePrincipal extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent detailIntent = new Intent(getApplicationContext(),AtividadeConfiguracao.class);
-            startActivity(detailIntent);
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+
+            case R.id.action_refresh:
+                atualizar();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -82,11 +86,37 @@ public class            AtividadePrincipal extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            Intent detailIntent = new Intent(getApplicationContext(),AtividadeDetalhes.class);
-            detailIntent.putExtra(Intent.EXTRA_TEXT,mAdaptador.getItem(position));
+            Intent detailIntent = new Intent(getApplicationContext(), AtividadeDetalhes.class);
+            detailIntent.putExtra(Intent.EXTRA_TEXT, mAdaptador.getItem(position));
             startActivity(detailIntent);
 
         }
 
     }
+
+
+    private void atualizar() {
+        PegaDadosDoServidor pega = new PegaDadosDoServidor();
+        pega.execute();
+    }
+
+    public class PegaDadosDoServidor extends AsyncTask<Void, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(Void... voids) {
+            ServidorFalso servidor = new ServidorFalso();
+            return servidor.pegaDados();
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            if (result != null) {
+                mAdaptador.clear();
+                for (String r : result) {
+                    mAdaptador.add(r);
+                }
+            }
+        }
+    }
+
 }

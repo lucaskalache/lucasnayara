@@ -9,5 +9,6 @@
     <string name="conf_rep_titulo">Nome do representante</string>
     <string name="conf_rep_chave">representante</string>
     <string name="conf_rep_padrao">Lucas</string>
+    <string name="action_refresh">atualizar</string>
 
 </resources>
