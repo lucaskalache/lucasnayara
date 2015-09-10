@@ -7,13 +7,13 @@ public class ServidorFalso {
     public String[] pegaDados() {
         String[] dados1 = {
                 "Novidades",
-                "Dois",
-                "Três indiozinhos"
+                "Promoções",
+                "Masculinos"
         };
 
         String[] dados2 = {
-                "Quatro",
-                "Cinco",
+                "Femininos",
+                "Infantis",
                 "Seis indiozinhos"
         };
 
