@@ -1,6 +1,10 @@
 package com.example.fcg1400019442.oboticario;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,35 +14,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 
 
 @SuppressWarnings("ALL")
 public class AtividadePrincipal extends ActionBarActivity {
     private ArrayAdapter<String> mAdaptador;
-
+    private Map<Integer, Long> mapaIds = new HashMap<Integer, Long>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atividade_principal);
 
-        String[] dados = {
-                "7  Tentações Egeo",
-                "Atraia",
-                "Provoque",
-                "Seduza",
-                "Agarre",
-                "Devore",
-                "Desfrute"
-        };
-
-        List<String> oboticario = new ArrayList<>(Arrays.asList(dados));
-
+        List<String> oboticario = new ArrayList<>();
 
         mAdaptador = new ArrayAdapter<>(
                 getApplicationContext(), // Contexto atual
@@ -50,11 +49,57 @@ public class AtividadePrincipal extends ActionBarActivity {
         listView.setAdapter(mAdaptador);
 
         listView.setOnItemClickListener(new ItemClicado());
-
-
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        atualizaInterface();
+    }
+
+    private void atualizar() {
+        PegaDadosDoServidor pega = new PegaDadosDoServidor();
+        pega.execute();
+    }
+
+    private void atualizaInterface() {
+        SQLiteOpenHelper dbHelper = new produtosDBHELPER(getApplicationContext());
+        SQLiteDatabase db;
+        db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.query(
+                contratoDB.Produto.NOME_TABELA, // Tabela
+                null, // colunas (todas)
+                null, // colunas para o where
+                null, // valores para o where
+                null, // group by
+                null, // having
+                null  // sort by
+        );
+
+        mAdaptador.clear();
+        mapaIds.clear();
+
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndex(contratoDB.Produto._ID));
+            long data = cursor.getLong(cursor.getColumnIndex(contratoDB.Produto.COLUNA_DATA));
+            String titulo = cursor.getString(cursor.getColumnIndex(contratoDB.Produto.COLUNA_NOME));
+            String texto = cursor.getString(cursor.getColumnIndex(contratoDB.Produto.COLUNA_DESCRICAO));
+
+            String dataBonita = new SimpleDateFormat("dd/MM/yyyy").format(new Date(data * 1000));
+
+            // Associa a posição do item ao id dele
+            mapaIds.put(mAdaptador.getCount(), id);
+
+            // Não estou usando o texto, mas poderia
+            mAdaptador.add(id + " - " + dataBonita + " - " + titulo);
+        }
+
+        db.close();
+        dbHelper.close();
+    }
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_atividade_principal, menu);
@@ -94,29 +139,40 @@ public class AtividadePrincipal extends ActionBarActivity {
 
     }
 
-
-    private void atualizar() {
-        PegaDadosDoServidor pega = new PegaDadosDoServidor();
-        pega.execute();
-    }
-
-    public class PegaDadosDoServidor extends AsyncTask<Void, Void, String[]> {
+    public class PegaDadosDoServidor extends AsyncTask<Void, Void, String[][]> {
 
         @Override
-        protected String[] doInBackground(Void... voids) {
+        protected String[][] doInBackground(Void... voids) {
             ServidorFalso servidor = new ServidorFalso();
             return servidor.pegaDados();
         }
 
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(String[][] result) {
             if (result != null) {
-                mAdaptador.clear();
-                for (String r : result) {
-                    mAdaptador.add(r);
+
+                SQLiteOpenHelper dbHelper = new produtosDBHELPER(getApplicationContext());
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                // LIMPA A TABELA INTEIRA!!!!
+                db.delete(contratoDB.Produto.NOME_TABELA, null, null);
+
+                for (String linha[] : result) {
+                    ContentValues entrada = new ContentValues();
+                    entrada.put(contratoDB.Produto.COLUNA_DATA, linha[0]);
+                    entrada.put(contratoDB.Produto.COLUNA_NOME, linha[1]);
+                    entrada.put(contratoDB.Produto.COLUNA_DESCRICAO, linha[2]);
+
+                    db.insert(contratoDB.Produto.NOME_TABELA, null, entrada);
+
                 }
+
+                db.close();
+                dbHelper.close();
             }
+
+            atualizaInterface();
         }
     }
-
 }
+
