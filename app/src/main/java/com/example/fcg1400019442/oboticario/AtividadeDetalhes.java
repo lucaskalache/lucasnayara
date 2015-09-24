@@ -24,28 +24,17 @@ public class AtividadeDetalhes extends ActionBarActivity {
         setContentView(R.layout.activity_atividade_detalhes);
 
         Intent intent = getIntent();
-        String detailText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        long id = intent.getLongExtra(Intent.EXTRA_TEXT, 0L);
 
         if (intent.hasExtra(Intent.EXTRA_TEXT)) {
             TextView detailTextView = (TextView) findViewById(R.id.detalhe_de_texto);
 
           SharedPreferences cliente = PreferenceManager.getDefaultSharedPreferences(this);
-            String nome_cliente = cliente.getString(getString(R.string.conf_rep_chave),getString(R.string.conf_rep_padrao));
 
-            detailText = "Representante" + nome_cliente + "faz" + detailText;
+          String nome_cliente = cliente.getString(getString(R.string.conf_rep_chave),getString(R.string.conf_rep_padrao));
 
-
-            detailTextView.setText(detailText);
+          detailTextView.setText(Long.toString(id));
         }
-
-        // acha o botao
-        // este botao, quem vai lidar com clique dele eh a classe tal
-
-        Button buttonView = (Button) findViewById(R.id.botao);
-
-        buttonView.setOnClickListener(new BotaoClicado());
-
-
     }
 
 
@@ -71,26 +60,6 @@ public class AtividadeDetalhes extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    private class BotaoClicado implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-
-
-            TextView detailTextView = (TextView) findViewById(R.id.detalhe_de_texto);
-            String itemDaLista;
-            itemDaLista = detailTextView.getText().toString();
-
-            Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
-                    .putExtra(AlarmClock.EXTRA_MESSAGE, itemDaLista)
-                    .putExtra(AlarmClock.EXTRA_HOUR, 12)
-                    .putExtra(AlarmClock.EXTRA_MINUTES, 34);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            }
-
-        }
     }
 
 

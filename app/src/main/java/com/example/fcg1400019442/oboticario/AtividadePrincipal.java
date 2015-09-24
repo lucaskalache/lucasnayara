@@ -132,7 +132,7 @@ public class AtividadePrincipal extends ActionBarActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             Intent detailIntent = new Intent(getApplicationContext(), AtividadeDetalhes.class);
-            detailIntent.putExtra(Intent.EXTRA_TEXT, mAdaptador.getItem(position));
+            detailIntent.putExtra(Intent.EXTRA_TEXT, mapaIds.get(position));
             startActivity(detailIntent);
 
         }
