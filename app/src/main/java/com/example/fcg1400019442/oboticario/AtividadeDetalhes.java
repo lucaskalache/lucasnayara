@@ -2,6 +2,9 @@ package com.example.fcg1400019442.oboticario;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.provider.AlarmClock;
 import android.support.v7.app.ActionBarActivity;
@@ -64,3 +67,4 @@ public class AtividadeDetalhes extends ActionBarActivity {
 
 
 }
+
