@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @SuppressWarnings("deprecation")
 public class AtividadeDetalhes extends ActionBarActivity {
@@ -27,16 +30,49 @@ public class AtividadeDetalhes extends ActionBarActivity {
         setContentView(R.layout.activity_atividade_detalhes);
 
         Intent intent = getIntent();
-        long id = intent.getLongExtra(Intent.EXTRA_TEXT, 0L);
 
         if (intent.hasExtra(Intent.EXTRA_TEXT)) {
+            long id = intent.getLongExtra(Intent.EXTRA_TEXT, 0L);
+
+            SQLiteOpenHelper dbHelper = new produtosDBHELPER(getApplicationContext());
+            SQLiteDatabase db;
+            db = dbHelper.getWritableDatabase();
+
+            Cursor cursor = db.query(
+                    contratoDB.Produto.NOME_TABELA, // Tabela
+                    null, // colunas (todas)
+                    contratoDB.Produto._ID + " = " + id, // colunas para o where
+                    null, // valores para o where
+                    null, // group by
+                    null, // having
+                    null  // sort by
+            );
+
+            if (cursor.moveToNext()) {
+
+                long data = cursor.getLong(cursor.getColumnIndex(contratoDB.Produto.COLUNA_DATA));
+                String titulo = cursor.getString(cursor.getColumnIndex(contratoDB.Produto.COLUNA_NOME));
+                String texto = cursor.getString(cursor.getColumnIndex(contratoDB.Produto.COLUNA_DESCRICAO));
+
+                String dataBonita = new SimpleDateFormat("dd/MM/yyyy").format(new Date(data * 1000));
+
+            }
+
+            SharedPreferences cliente = PreferenceManager.getDefaultSharedPreferences(this);
+            String nome_cliente = cliente.getString(getString(R.string.conf_rep_chave), getString(R.string.conf_rep_padrao));
+
+
             TextView detailTextView = (TextView) findViewById(R.id.detalhe_de_texto);
+            detailTextView.setText(        Long.toString(ServidorFalso)        );
 
-          SharedPreferences cliente = PreferenceManager.getDefaultSharedPreferences(this);
+            TextView detailTextView1 = (TextView) findViewById(R.id.texto_data);
+            detailTextView1.setText(        Long.toString()        );
 
-          String nome_cliente = cliente.getString(getString(R.string.conf_rep_chave),getString(R.string.conf_rep_padrao));
+            TextView detailTextView2 = (TextView) findViewById(R.id.texto_nome);
+            detailTextView2.setText(        Long.toString(id)        );
 
-          detailTextView.setText(Long.toString(id));
+            TextView detailTextView3 = (TextView) findViewById(R.id.texto_descricao);
+            detailTextView3.setText(        Long.toString(id)        );
         }
     }
 
@@ -57,7 +93,7 @@ public class AtividadeDetalhes extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent detailIntent = new Intent(getApplicationContext(),AtividadeConfiguracao.class);
+            Intent detailIntent = new Intent(getApplicationContext(), AtividadeConfiguracao.class);
             startActivity(detailIntent);
             return true;
         }
