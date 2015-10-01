@@ -56,24 +56,20 @@ public class AtividadeDetalhes extends ActionBarActivity {
 
                 String dataBonita = new SimpleDateFormat("dd/MM/yyyy").format(new Date(data * 1000));
 
+
+                SharedPreferences cliente = PreferenceManager.getDefaultSharedPreferences(this);
+                String nome_cliente = cliente.getString(getString(R.string.conf_rep_chave), getString(R.string.conf_rep_padrao));
+
+                TextView detailTextView1 = (TextView) findViewById(R.id.texto_data);
+                detailTextView1.setText(dataBonita);
+
+                TextView detailTextView2 = (TextView) findViewById(R.id.texto_nome);
+                detailTextView2.setText(titulo);
+
+                TextView detailTextView3 = (TextView) findViewById(R.id.texto_descricao);
+                detailTextView3.setText(texto);
             }
-
-            SharedPreferences cliente = PreferenceManager.getDefaultSharedPreferences(this);
-            String nome_cliente = cliente.getString(getString(R.string.conf_rep_chave), getString(R.string.conf_rep_padrao));
-
-
-            TextView detailTextView = (TextView) findViewById(R.id.detalhe_de_texto);
-            detailTextView.setText(        Long.toString(ServidorFalso)        );
-
-            TextView detailTextView1 = (TextView) findViewById(R.id.texto_data);
-            detailTextView1.setText(        Long.toString()        );
-
-            TextView detailTextView2 = (TextView) findViewById(R.id.texto_nome);
-            detailTextView2.setText(        Long.toString(id)        );
-
-            TextView detailTextView3 = (TextView) findViewById(R.id.texto_descricao);
-            detailTextView3.setText(        Long.toString(id)        );
-        }
+            }
     }
 
 
